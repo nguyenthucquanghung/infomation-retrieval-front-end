@@ -8,17 +8,14 @@ error_reporting(E_ALL);
 // Use UTF-8
 mb_internal_encoding("UTF-8");
 
-function mb_trim($string, $charlist = null) 
+function mb_trim($string, $charlist = null)
 {
-	if (is_null($charlist)) 
-	{
-		return trim($string);
-	} 
-	else 
-	{
-		$charlist = preg_quote($charlist, '/');
-		return preg_replace("/(^[$charlist]+)|([$charlist]+$)/us", '', $string);
-	}
+    if (is_null($charlist)) {
+        return trim($string);
+    } else {
+        $charlist = preg_quote($charlist, '/');
+        return preg_replace("/(^[$charlist]+)|([$charlist]+$)/us", '', $string);
+    }
 }
 
 // Read data and convert to UTF-8 
@@ -36,22 +33,19 @@ $term = mb_trim(mb_strtolower(($_GET['q'])));
 // Filter data
 $max_suggestion = 8;
 $count = 0;
-if (!empty($term))
-{
-	foreach($article_data as $key => $value)
-	{
-		$topic = mb_strtolower($value['topic']);
-		if(mb_strpos($topic, $term) !== false)
-		{
-			array_push($output_data, array('topic'=>$value['topic'], 'newspaper'=>$value['newspaper']));
-			$count=$count+1;
-			if($count>$max_suggestion){
-				array_push($output_data, array('topic'=>"$term", 'newspaper'=>'...Enter để xem đầy đủ kết quả...'));
-				break;
-			}
-			//array_push($output_data, $value['topic']);
-		};
-	};
+if (!empty($term)) {
+    foreach ($article_data as $key => $value) {
+        $topic = mb_strtolower($value['topic']);
+        if (mb_strpos($topic, $term) !== false) {
+            array_push($output_data, array('topic' => $value['topic'], 'newspaper' => $value['newspaper']));
+            $count = $count + 1;
+            if ($count > $max_suggestion) {
+                array_push($output_data, array('topic' => "$term", 'newspaper' => '...Enter để xem đầy đủ kết quả...'));
+                break;
+            }
+            //array_push($output_data, $value['topic']);
+        };
+    };
 }
 
 

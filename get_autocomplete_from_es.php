@@ -8,17 +8,14 @@ error_reporting(E_ALL);
 // Use UTF-8
 mb_internal_encoding("UTF-8");
 
-function mb_trim($string, $charlist = null) 
+function mb_trim($string, $charlist = null)
 {
-	if (is_null($charlist)) 
-	{
-		return trim($string);
-	} 
-	else 
-	{
-		$charlist = preg_quote($charlist, '/');
-		return preg_replace("/(^[$charlist]+)|([$charlist]+$)/us", '', $string);
-	}
+    if (is_null($charlist)) {
+        return trim($string);
+    } else {
+        $charlist = preg_quote($charlist, '/');
+        return preg_replace("/(^[$charlist]+)|([$charlist]+$)/us", '', $string);
+    }
 }
 
 
@@ -28,15 +25,14 @@ function mb_trim($string, $charlist = null)
 $term = $_GET['q'];
 $term_count = intval($_GET['length']);
 
-if($term_count===1)
-{
-$param = '
+if ($term_count === 1) {
+    $param = '
 {
   "query": 
   {
     "wildcard":
     {
-      "topic":'.'"'.$term.'*" 
+      "topic":' . '"' . $term . '*" 
     }
   },
   "size": "10",
@@ -45,16 +41,14 @@ $param = '
 	         }
 }
 	';
-}
-else
-{
-$param = '
+} else {
+    $param = '
 {
   "query": 
   {
     "match_phrase":
     {
-      "topic":'.'"'.$term.'" 
+      "topic":' . '"' . $term . '" 
     }
   },
   "size": "10",
@@ -68,8 +62,8 @@ $param = '
 //echo $param;
 
 $header = array(
-	    "content-type: application/json; charset=UTF-8"
-		);
+    "content-type: application/json; charset=UTF-8"
+);
 
 $curl = curl_init();
 curl_setopt($curl, CURLOPT_URL, "http://localhost:9200/vi_news/_search");
@@ -92,9 +86,8 @@ curl_close($curl);
 $es_result = json_decode($es_result, true)['hits']['hits'];
 
 $article_data = array();
-foreach($es_result as $key => $value)
-{
-	array_push($article_data, $value['_source']);
+foreach ($es_result as $key => $value) {
+    array_push($article_data, $value['_source']);
 }
 
 
